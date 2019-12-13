@@ -1,3 +1,6 @@
+/**
+ * Initialize and Test SolutionSet() and sub-classes
+ */
 private SolutionSet testSet() {
   
   // Initialize Test Solution Set

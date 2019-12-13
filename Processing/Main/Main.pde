@@ -64,7 +64,7 @@ public void draw() {
        "\n" + "Press 'r' to regenerate data"
        , 50, 20);
   
-  // De-active automatic infinite loop nature of draw() method
+  // De-activate automatic infinite loop nature of draw() method
   noLoop();
 }
 
@@ -86,28 +86,28 @@ public void keyPressed() {
     int numObjectives = tradeSpace.getObjectiveList().size();
     
     if (keyCode == UP) {
-      if(y_index + 1 < numObjectives) {
-        y_index++;
+      if(graphic.y_index + 1 < numObjectives) {
+        graphic.y_index++;
       } else {
-        y_index = 0;
+        graphic.y_index = 0;
       }
     } else if (keyCode == DOWN) {
-      if(y_index > 0) {
-        y_index--;
+      if(graphic.y_index > 0) {
+        graphic.y_index--;
       } else {
-        y_index = numObjectives - 1;
+        graphic.y_index = numObjectives - 1;
       }
     } else if (keyCode == LEFT) {
-      if(x_index > 0) {
-        x_index--;
+      if(graphic.x_index > 0) {
+        graphic.x_index--;
       } else {
-        x_index = numObjectives - 1;
+        graphic.x_index = numObjectives - 1;
       }
     } else if (keyCode == RIGHT) {
-      if(x_index + 1 < numObjectives) {
-        x_index++;
+      if(graphic.x_index + 1 < numObjectives) {
+        graphic.x_index++;
       } else {
-        x_index = 0;
+        graphic.x_index = 0;
       }
     } 
   }
