@@ -38,16 +38,11 @@
 String VERSION = "v1.0-alpha.1";
 
 // Width of Processing canvas, in pixels
-int CANVAS_WIDTH  = 1000;
-int CANVAS_HEIGHT = 1000;
-
-// Default indices for rendering objective on X or Y axis
-int DEFAULT_X_INDEX = 0;
-int DEFAULT_Y_INDEX = 0;
-
-color WHITE  = color(255);
+int CANVAS_WIDTH  = 500;
+int CANVAS_HEIGHT = 500;
 
 SolutionSet tradeSpace;
+Renderer graphic = new Renderer();
 
 public void settings() {
   size(CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -55,21 +50,66 @@ public void settings() {
 
 public void setup() {
   tradeSpace = testSet();
+  graphic = new Renderer();
 }
 
 public void draw() {
   
   // render items to screen;
-  render();
+  graphic.render(tradeSpace);
+  
+  // Key Legend
+  textAlign(LEFT);
+  text("Use arrow keys to change axes objectives" + 
+       "\n" + "Press 'r' to regenerate data"
+       , 50, 20);
   
   // De-active automatic infinite loop nature of draw() method
   noLoop();
 }
 
-private void render() {
-  background(WHITE);
-}
-
-private void renderSolutionSet(SolutionSet set, int x, int y, int w, int h, color fill, int stroke) {
+/**
+ * Listener for interactive visualization
+ */
+public void keyPressed() {
   
+  switch(key) {
+      case 'r': // regenerate
+        tradeSpace = testSet();
+        loop();
+        break;
+  }
+
+  // Listener for arrow-based key commands to change which objective is plotted on the graph
+  if (key == CODED) {
+    
+    int numObjectives = tradeSpace.getObjectiveList().size();
+    
+    if (keyCode == UP) {
+      if(y_index + 1 < numObjectives) {
+        y_index++;
+      } else {
+        y_index = 0;
+      }
+    } else if (keyCode == DOWN) {
+      if(y_index > 0) {
+        y_index--;
+      } else {
+        y_index = numObjectives - 1;
+      }
+    } else if (keyCode == LEFT) {
+      if(x_index > 0) {
+        x_index--;
+      } else {
+        x_index = numObjectives - 1;
+      }
+    } else if (keyCode == RIGHT) {
+      if(x_index + 1 < numObjectives) {
+        x_index++;
+      } else {
+        x_index = 0;
+      }
+    } 
+  }
+  loop();
 }

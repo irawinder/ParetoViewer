@@ -25,7 +25,7 @@
   private String name;
   
   // dictionaries of performance indicators associated with a solution
-  private HashMap<String, Performance> indicatorMap;
+  private HashMap<Objective, Performance> indicatorMap;
   private ArrayList<Performance> indicatorList;
   
   /**
@@ -33,7 +33,7 @@
    */
   public Solution() {
     this.name = "";
-    this.indicatorMap = new HashMap<String, Performance>();
+    this.indicatorMap = new HashMap<Objective, Performance>();
     this.indicatorList = new ArrayList<Performance>();
   }
   
@@ -59,15 +59,14 @@
    * @param indicator Quantity that represents a solution's ability to satisfy a particular Objective
    */
   public void addIndicator(Performance indicator) {
-    String indicatorName = indicator.getObjective().getName();
-    this.indicatorMap.put(indicatorName, indicator);
+    this.indicatorMap.put(indicator.getObjective(), indicator);
     this.indicatorList.add(indicator);
   }
   
   /**
    * Get a HashMap dictionary of Performance Indicators associated with this solution
    */
-  public HashMap<String, Performance> getIndicatorMap() {
+  public HashMap<Objective, Performance> getIndicatorMap() {
     return this.indicatorMap;
   }
   

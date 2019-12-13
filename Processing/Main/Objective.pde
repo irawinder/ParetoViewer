@@ -123,6 +123,6 @@ private class Objective {
   
   @Override
   public String toString() {
-    return "Objective: " + this.name + ": [" + this.units + "] [Utopia -> " + this.utopia + "] [MIN: " + this.min + "] [MAX: " + this.max + "]";
+    return "Objective: " + this.name + " [" + this.units + "] [Utopia -> " + this.utopia + "] [MIN: " + this.min + "] [MAX: " + this.max + "]";
   }
 }
