@@ -1,5 +1,8 @@
 # ParetoOptimizer
- Pareto Optimizer facilitates the analysis and visualization of scenario performance in a multi-objective optimization problems
+ Pareto Optimizer facilitates the analysis and visualization of scenario performance in a multi-objective optimization problems.
+ 
+## What is Pareto Optimization?
+ Glad you asked. Read about it [here](https://en.wikipedia.org/wiki/Multi-objective_optimization).
  
 ## How to open and run .PDE files (i.e. Processing scripts):
 
