@@ -1,7 +1,7 @@
 /**
  * Test application
  */
- void runTests() {
+private void runTests() {
   
   // Print all Solutions
   println(tradeSpace);
