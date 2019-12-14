@@ -72,9 +72,7 @@ public class SolutionSet {
     // Update lists of objectives for this solution set
     for(Performance p : design.getIndicatorList()) {
       if(objectiveMap.get(p.getObjective().getName()) == null) {
-        String objectiveName = p.getObjective().getName();
-        this.objectiveMap.put(objectiveName, p.getObjective());
-        this.objectiveList.add(p.getObjective());
+        addObjective(p.getObjective());
       }
     }
   }
