@@ -79,17 +79,4 @@
      }
      return true;
    }
-   
-   /**
-    * Return the subset of solutions that are "dominated" by other solutions
-    *
-    * @param input Theoretical or Available Solution Space
-    */
-   public SolutionSet dominated(SolutionSet input) {
-     SolutionSet dominated = new SolutionSet();
-     
-     // TODO
-     
-     return dominated;
-   }
  }
