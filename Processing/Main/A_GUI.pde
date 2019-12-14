@@ -140,6 +140,7 @@ private class Renderer {
     
     // Draw Label
     textAlign(LEFT);
+    fill(fill, 100);
     text(label, 5, 15);  
       
     popMatrix();

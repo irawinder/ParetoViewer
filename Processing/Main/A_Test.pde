@@ -1,4 +1,7 @@
-void runTests() {
+/**
+ * Test application
+ */
+ void runTests() {
   
   // Print all Solutions
   println(tradeSpace);

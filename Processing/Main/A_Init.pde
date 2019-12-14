@@ -1,5 +1,5 @@
 /**
- * Initialize and Test SolutionSet() and sub-classes
+ * Initialize application
  */
 private SolutionSet testSet() {
   

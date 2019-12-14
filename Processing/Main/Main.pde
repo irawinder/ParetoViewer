@@ -43,8 +43,8 @@ int CANVAS_HEIGHT = 500;
 
 SolutionSet tradeSpace;
 SolutionSet paretoFront;
-Pareto pEvaluate;
-Renderer graphic;
+Pareto pareto;
+Renderer canvas;
 
 public void settings() {
   size(CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -52,16 +52,17 @@ public void settings() {
 
 public void setup() {
   tradeSpace = testSet();
-  pEvaluate = new Pareto();
-  paretoFront = pEvaluate.nonDominated(tradeSpace);
-  graphic = new Renderer();
+  pareto = new Pareto();
+  paretoFront = pareto.nonDominated(tradeSpace);
+  canvas = new Renderer();
 }
 
 public void draw() {
   
   // render items to screen;
-  graphic.render(tradeSpace, paretoFront, 50, 50, 400, 400);
+  canvas.render(tradeSpace, paretoFront, 50, 50, 400, 400);
   
+  // Run and Print Tests to console
   runTests();
   
   // De-activate automatic infinite loop nature of draw() method
@@ -76,8 +77,7 @@ public void keyPressed() {
   switch(key) {
       case 'r': // regenerate
         tradeSpace = testSet();
-        paretoFront = pEvaluate.nonDominated(tradeSpace);
-        loop();
+        paretoFront = pareto.nonDominated(tradeSpace);
         break;
   }
 
@@ -87,28 +87,28 @@ public void keyPressed() {
     int numObjectives = tradeSpace.getObjectiveList().size();
     
     if (keyCode == UP) {
-      if(graphic.y_index + 1 < numObjectives) {
-        graphic.y_index++;
+      if(canvas.y_index + 1 < numObjectives) {
+        canvas.y_index++;
       } else {
-        graphic.y_index = 0;
+        canvas.y_index = 0;
       }
     } else if (keyCode == DOWN) {
-      if(graphic.y_index > 0) {
-        graphic.y_index--;
+      if(canvas.y_index > 0) {
+        canvas.y_index--;
       } else {
-        graphic.y_index = numObjectives - 1;
+        canvas.y_index = numObjectives - 1;
       }
     } else if (keyCode == LEFT) {
-      if(graphic.x_index > 0) {
-        graphic.x_index--;
+      if(canvas.x_index > 0) {
+        canvas.x_index--;
       } else {
-        graphic.x_index = numObjectives - 1;
+        canvas.x_index = numObjectives - 1;
       }
     } else if (keyCode == RIGHT) {
-      if(graphic.x_index + 1 < numObjectives) {
-        graphic.x_index++;
+      if(canvas.x_index + 1 < numObjectives) {
+        canvas.x_index++;
       } else {
-        graphic.x_index = 0;
+        canvas.x_index = 0;
       }
     } 
   }
