@@ -42,7 +42,9 @@ int CANVAS_WIDTH  = 500;
 int CANVAS_HEIGHT = 500;
 
 SolutionSet tradeSpace;
-Renderer graphic = new Renderer();
+SolutionSet paretoFront;
+Pareto pEvaluate;
+Renderer graphic;
 
 public void settings() {
   size(CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -50,19 +52,15 @@ public void settings() {
 
 public void setup() {
   tradeSpace = testSet();
+  pEvaluate = new Pareto();
+  paretoFront = pEvaluate.nonDominated(tradeSpace);
   graphic = new Renderer();
 }
 
 public void draw() {
   
   // render items to screen;
-  graphic.render(tradeSpace);
-  
-  // Key Legend
-  textAlign(LEFT);
-  text("Use arrow keys to change axes objectives" + 
-       "\n" + "Press 'r' to regenerate data"
-       , 50, 20);
+  graphic.render(tradeSpace, paretoFront, 50, 50, 400, 400);
   
   // De-activate automatic infinite loop nature of draw() method
   noLoop();
@@ -76,6 +74,7 @@ public void keyPressed() {
   switch(key) {
       case 'r': // regenerate
         tradeSpace = testSet();
+        paretoFront = pEvaluate.nonDominated(tradeSpace);
         loop();
         break;
   }

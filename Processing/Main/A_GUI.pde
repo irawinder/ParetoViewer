@@ -27,9 +27,10 @@ private class Renderer {
   private int DEFAULT_Y_INDEX = 1;
   
   // Default Colors
-  private color WHITE  = color(255);
-  private color BLACK  = color(0);
-  private color GREY  = color(150);
+  private color WHITE   = color(255);
+  private color BLACK   = color(0);
+  private color GREY    = color(150);
+  private color PURPLE  = color(255, 0, 255);
   
   // Index value of objectives to show on axes
   public int x_index, y_index;
@@ -39,32 +40,47 @@ private class Renderer {
     y_index = DEFAULT_Y_INDEX;
   }
   
-  private void render(SolutionSet set) {
+  private void render(SolutionSet set1, SolutionSet set2, int x, int y, int w, int h) {
     background(WHITE);
-    renderSolutionSet(set, 50, 50, 400, 400, BLACK, 3, true);
+       
+    renderSolutionSet("", set1, x, y, w, h, BLACK, 3, true);
+    renderSolutionSet("Non-Dominated Solutions", set2, x, y, w, h, PURPLE, 4, false);
+    
+    // Key Legend
+    textAlign(LEFT); fill(BLACK);
+    text("Use arrow keys to change axes objectives" + 
+       "\n" + "Press 'r' to regenerate data"
+       , 50, 20);
   }
   
-  private void renderSolutionSet(SolutionSet set, int x, int y, int w, int h, color fill, int diameter, boolean showAxes) {
+  private void renderSolutionSet(String label, SolutionSet set, int x, int y, int w, int h, color fill, int diameter, boolean showAxes) {
     
     pushMatrix(); translate(x, y);
     
     // Generate Parameters
-    Objective x_axis = set.getObjectiveList().get(x_index);
-    Objective y_axis = set.getObjectiveList().get(y_index);
+    Objective x_axis, y_axis;
+    if (set.getObjectiveList().size() == 0) {
+      x_axis = new Objective();
+      y_axis = new Objective();
+    } else {
+      x_axis = set.getObjectiveList().get(x_index);
+      y_axis = set.getObjectiveList().get(y_index);
+    }
     
-    // Draw Axis
-    noFill();
-    stroke(GREY);
-    rect(0, 0, w, h);
-    
-    // Draw Text
-    fill(BLACK);
-    
+    if (showAxes) {
+      
+      // Draw Axis
+      noFill();
+      stroke(GREY);
+      rect(0, 0, w, h);
+      
+      fill(BLACK);
+      
       // Draw x_axis label
       pushMatrix(); translate(0, 20);
         
         // Name
-        pushMatrix(); translate(0.5*w, h);
+        pushMatrix(); translate(w/2, h);
         textAlign(CENTER);
         text(x_axis.getName() + " [" + x_axis.getUnits() + "] [Utopia -> " + x_axis.getUtopia() + "]", 0, 0);
         popMatrix();
@@ -87,10 +103,10 @@ private class Renderer {
       pushMatrix(); translate(-10, 0);
         
         // Name
-        pushMatrix(); translate(0, 0.5*h);
+        pushMatrix(); translate(0, h/2);
         textAlign(CENTER);
         rotate(-0.5*PI);
-        text(y_axis.getName() + " [" + x_axis.getUnits() + "] [Utopia -> " + x_axis.getUtopia() + "]", 0, 0);
+        text(y_axis.getName() + " [" + y_axis.getUnits() + "] [Utopia -> " + y_axis.getUtopia() + "]", 0, 0);
         popMatrix();
         
         // Min Value
@@ -108,18 +124,23 @@ private class Renderer {
         popMatrix();
       
       popMatrix();
+    }
       
-      // Draw Solutions
-      for(Solution design : set.getSetList()) {
-        Performance xP = design.getIndicatorMap().get(x_axis);
-        Performance yP = design.getIndicatorMap().get(y_axis);
-        
-        float x_pos = map( (float)xP.getValue(), (float)x_axis.getMin(), (float)x_axis.getMax(), 0, w);
-        float y_pos = map( (float)yP.getValue(), (float)y_axis.getMin(), (float)y_axis.getMax(), 0, h);
-        
-        fill(fill); noStroke();
-        circle(x_pos, y_pos, diameter);
-      }
+    // Draw Solutions
+    for(Solution design : set.getSetList()) {
+      Performance xP = design.getIndicatorMap().get(x_axis);
+      Performance yP = design.getIndicatorMap().get(y_axis);
+      
+      float x_pos = map( (float)xP.getValue(), (float)x_axis.getMin(), (float)x_axis.getMax(), 0, w);
+      float y_pos = map( (float)yP.getValue(), (float)y_axis.getMin(), (float)y_axis.getMax(), 0, h);
+      
+      fill(fill); noStroke();
+      circle(x_pos, y_pos, diameter);
+    }
+    
+    // Draw Label
+    textAlign(LEFT);
+    text(label, 5, 15);  
       
     popMatrix();
   }
