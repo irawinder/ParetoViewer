@@ -1,3 +1,6 @@
+/**
+ * Initialize application
+ */
 private SolutionSet testSet() {
   
   // Initialize Test Solution Set
@@ -44,13 +47,6 @@ private SolutionSet testSet() {
       kpi[j].updateMinMax(p);
     }
     testSet.addSolution(design[i]);
-  }
-  
-  // Print Summary of Data Structure to Console
-  println(testSet);
-  println("--------------------------------");
-  for(Objective obj : testSet.getObjectiveList()) {
-    println(obj);
   }
   
   return testSet;

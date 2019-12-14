@@ -42,7 +42,9 @@ int CANVAS_WIDTH  = 500;
 int CANVAS_HEIGHT = 500;
 
 SolutionSet tradeSpace;
-Renderer graphic = new Renderer();
+SolutionSet paretoFront;
+Pareto pareto;
+Renderer canvas;
 
 public void settings() {
   size(CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -50,21 +52,20 @@ public void settings() {
 
 public void setup() {
   tradeSpace = testSet();
-  graphic = new Renderer();
+  pareto = new Pareto();
+  paretoFront = pareto.nonDominated(tradeSpace);
+  canvas = new Renderer();
 }
 
 public void draw() {
   
   // render items to screen;
-  graphic.render(tradeSpace);
+  canvas.render(tradeSpace, paretoFront, 50, 50, 400, 400);
   
-  // Key Legend
-  textAlign(LEFT);
-  text("Use arrow keys to change axes objectives" + 
-       "\n" + "Press 'r' to regenerate data"
-       , 50, 20);
+  // Run and Print Tests to console
+  runTests();
   
-  // De-active automatic infinite loop nature of draw() method
+  // De-activate automatic infinite loop nature of draw() method
   noLoop();
 }
 
@@ -76,7 +77,7 @@ public void keyPressed() {
   switch(key) {
       case 'r': // regenerate
         tradeSpace = testSet();
-        loop();
+        paretoFront = pareto.nonDominated(tradeSpace);
         break;
   }
 
@@ -86,28 +87,28 @@ public void keyPressed() {
     int numObjectives = tradeSpace.getObjectiveList().size();
     
     if (keyCode == UP) {
-      if(y_index + 1 < numObjectives) {
-        y_index++;
+      if(canvas.y_index + 1 < numObjectives) {
+        canvas.y_index++;
       } else {
-        y_index = 0;
+        canvas.y_index = 0;
       }
     } else if (keyCode == DOWN) {
-      if(y_index > 0) {
-        y_index--;
+      if(canvas.y_index > 0) {
+        canvas.y_index--;
       } else {
-        y_index = numObjectives - 1;
+        canvas.y_index = numObjectives - 1;
       }
     } else if (keyCode == LEFT) {
-      if(x_index > 0) {
-        x_index--;
+      if(canvas.x_index > 0) {
+        canvas.x_index--;
       } else {
-        x_index = numObjectives - 1;
+        canvas.x_index = numObjectives - 1;
       }
     } else if (keyCode == RIGHT) {
-      if(x_index + 1 < numObjectives) {
-        x_index++;
+      if(canvas.x_index + 1 < numObjectives) {
+        canvas.x_index++;
       } else {
-        x_index = 0;
+        canvas.x_index = 0;
       }
     } 
   }
