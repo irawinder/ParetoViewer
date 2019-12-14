@@ -66,6 +66,27 @@ private class Performance {
     return this.metric;
   }
   
+  /**
+   * Hold a contest between a competing Performance Metric, return true if winner. Ties count as a loss.
+   *
+   * @param contestant Competing Parameter
+   */
+  public boolean contest(Performance contestant) {
+    if (metric != contestant.getObjective()) {
+      println(contestant + " is an incompatible contestant!");
+      return true;
+    } else {
+      if (metric.getUtopia() > 0) {
+        return this.value > contestant.getValue();
+      } else if (metric.getUtopia() < 0) {
+        return this.value < contestant.getValue();
+      } else {
+        println("There's no contest here. Everybody wins.");
+        return true;
+      }
+    }
+  }
+  
   @Override
   public String toString() {
     return "Performance [" + this.metric.getName() + "]: " + this.value + " " + this.metric.getUnits() + "; " + this.metric;
