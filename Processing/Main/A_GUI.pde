@@ -132,7 +132,7 @@ private class Renderer {
       Performance yP = design.getIndicatorMap().get(y_axis);
       
       float x_pos = map( (float)xP.getValue(), (float)x_axis.getMin(), (float)x_axis.getMax(), 0, w);
-      float y_pos = map( (float)yP.getValue(), (float)y_axis.getMin(), (float)y_axis.getMax(), 0, h);
+      float y_pos = map( (float)yP.getValue(), (float)y_axis.getMin(), (float)y_axis.getMax(), h, 0);
       
       fill(fill); noStroke();
       circle(x_pos, y_pos, diameter);

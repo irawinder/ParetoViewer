@@ -67,7 +67,7 @@ private class Performance {
   }
   
   /**
-   * Hold a contest between a competing Performance Metric, retrun true if winner. Ties count as a win.
+   * Hold a contest between a competing Performance Metric, return true if winner. Ties count as a loss.
    *
    * @param contestant Competing Parameter
    */
@@ -77,9 +77,9 @@ private class Performance {
       return true;
     } else {
       if (metric.getUtopia() > 0) {
-        return this.value >= contestant.getValue();
+        return this.value > contestant.getValue();
       } else if (metric.getUtopia() < 0) {
-        return this.value <= contestant.getValue();
+        return this.value < contestant.getValue();
       } else {
         println("There's no contest here. Everybody wins.");
         return true;

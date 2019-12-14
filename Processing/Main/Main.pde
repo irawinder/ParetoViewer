@@ -62,6 +62,8 @@ public void draw() {
   // render items to screen;
   graphic.render(tradeSpace, paretoFront, 50, 50, 400, 400);
   
+  runTests();
+  
   // De-activate automatic infinite loop nature of draw() method
   noLoop();
 }

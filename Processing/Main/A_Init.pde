@@ -49,12 +49,5 @@ private SolutionSet testSet() {
     testSet.addSolution(design[i]);
   }
   
-  // Print Summary of Data Structure to Console
-  println(testSet);
-  println("--------------------------------");
-  for(Objective obj : testSet.getObjectiveList()) {
-    println(obj);
-  }
-  
   return testSet;
 }

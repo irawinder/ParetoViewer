@@ -47,17 +47,15 @@
      ArrayList<Solution> dominant = new ArrayList<Solution>();
      for (Solution design : input.getSetList()) dominant.add(design);
      
-     // Pear dominated solutions from the list
-     int design_index = 0;
-     while(design_index < dominant.size()) {
-       Solution design = dominant.get(design_index);
-       for (int contestant_index = dominant.size() - 1; contestant_index > design_index; contestant_index--) {
+     // Pare dominated solutions from the list
+     for (Solution design : input.getSetList()) {
+       for (int contestant_index = dominant.size() - 1; contestant_index >= 0; contestant_index--) {
          Solution contestant = dominant.get(contestant_index);
-         if (dominates(design, contestant)) dominant.remove(contestant_index);
+         if (dominates(design, contestant)) {
+           dominant.remove(contestant_index);
+         } 
        }
-       design_index ++;
      }
-     
      // Populate the nonDominated SolutionSet
      for (Solution design : dominant) nonDominated.addSolution(design);
      
@@ -75,7 +73,9 @@
      for(Performance p : design.getIndicatorList()) {
        Objective metric = p.getObjective(); 
        Performance pContestant = contestant.getIndicatorMap().get(metric);
-       if(!p.contest(pContestant)) return false; 
+       if(!p.contest(pContestant)) {
+         return false; 
+       }
      }
      return true;
    }
