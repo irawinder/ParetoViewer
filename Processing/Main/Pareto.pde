@@ -1,8 +1,6 @@
 /**
  *  Pareto() is a class that receives objects of format SolutionSet.
- *  Primary methods return a set that describes the Pareto-dominance of 
- *  solutions in a set, as well as some home-brewed, non-discreet scores 
- *  of the extent of a solution's Pareto dominance or submissiveness.
+ *  Primary method returns a set of Pareto-dominant Solutions
  *  
  *  @author Ira Winder, jiw@mit.edu, 2019
  *
