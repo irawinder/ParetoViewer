@@ -3,19 +3,19 @@
  */
 private void runTests() {
   
-  // Print all Solutions
-  println(tradeSpace);
-  println("--------------------------------");
+  //// Print all Solutions
+  //println("---------------Begin Trade Space-----------------");
+  //println(tradeSpace);
   
   // Print Summary of Pareto Dominant Solutions
+  println("---------------Begin Pareto Front-----------------");
   println(paretoFront);
-  println("--------------------------------");
   
   // Print Objectives
-  for(Objective obj : tradeSpace.getObjectiveList()) {
-    println(obj);
+  println("---------------Begin Objectives-----------------");
+  for(int i=0; i<kpis.length; i++) {
+    println(kpis[i]);
   }
-  println("--------------------------------");
   
   //// Test Performance Contests
   //Objective obj = new Objective();

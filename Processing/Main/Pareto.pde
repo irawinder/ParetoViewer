@@ -51,6 +51,7 @@
          Solution contestant = dominant.get(contestant_index);
          if (dominates(design, contestant)) {
            dominant.remove(contestant_index);
+           println("removed " + contestant.getName() + ":\n" + design + "\n" + contestant);
          } 
        }
      }
@@ -66,15 +67,23 @@
     * @param design Design we would like to know the status of
     * @param contestant Design we are comparing against
     */
-   boolean dominates(Solution design, Solution contestant) {
+   private boolean dominates(Solution design, Solution contestant) {
+     if(design.getName().equals(contestant.getName())) {
+       return false;
+     }
+     
+     int loss = 0;
+     int tie = 0;
      // If design loses to the contestant in any objective, return false
      for(Performance p : design.getIndicatorList()) {
        Objective metric = p.getObjective(); 
        Performance pContestant = contestant.getIndicatorMap().get(metric);
-       if(!p.contest(pContestant)) {
-         return false; 
+       if(p.getValue() == pContestant.getValue()) {
+         tie++;
+       } else if(!p.contest(pContestant)) {
+         loss++;
        }
      }
-     return true;
+     return (loss == 0 && tie < design.getIndicatorList().size());
    }
  }

@@ -9,7 +9,7 @@
  *  https://en.wikipedia.org/wiki/Multi-objective_optimization
  *
  *  To use this software, you must already have a data-set of design scenarios and their multi-
- *  objective performance. For instance:
+ *  objective performance to load into "solutionFile". For instance:
  *
  *  Solution Name  |  Objective #1        |  Objective #1        |  Objective #3        | ...
  *  -----------------------------------------------------------------------------------------
@@ -35,12 +35,16 @@
  *    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
  
-String VERSION = "v1.0-alpha.1";
+String VERSION = "v1.0-alpha.3";
 
 // Width of Processing canvas, in pixels
 int CANVAS_WIDTH  = 500;
-int CANVAS_HEIGHT = 500;
+int CANVAS_HEIGHT = 750;
 
+File objectivesFile;
+File solutionsFile;
+
+Objective[] kpis;
 SolutionSet tradeSpace;
 SolutionSet paretoFront;
 Pareto pareto;
@@ -51,16 +55,23 @@ public void settings() {
 }
 
 public void setup() {
-  tradeSpace = testSet();
+  
+  // Initialize the Pareto Analyzer Class
   pareto = new Pareto();
-  paretoFront = pareto.nonDominated(tradeSpace);
+  
+  // Initialize Canvas Renderer
   canvas = new Renderer();
+  
+  // Create and Analyze an empy solution set
+  kpis = new Objective[0];
+  tradeSpace = new SolutionSet();
+  paretoFront = pareto.nonDominated(tradeSpace);
 }
 
 public void draw() {
   
   // render items to screen;
-  canvas.render(tradeSpace, paretoFront, 50, 50, 400, 400);
+  canvas.render(tradeSpace, paretoFront, 50, 300, 400, 400);
   
   // Run and Print Tests to console
   runTests();
@@ -75,9 +86,24 @@ public void draw() {
 public void keyPressed() {
   
   switch(key) {
-      case 'r': // regenerate
-        tradeSpace = testSet();
+      case 'c': // clear
+        objectivesFile = null;
+        solutionsFile = null;
+        kpis = new Objective[0];
+        tradeSpace = new SolutionSet();
         paretoFront = pareto.nonDominated(tradeSpace);
+        break;
+      case 'r': // random solution set
+        solutionsFile = null;
+        kpis = testObjectives();
+        tradeSpace = randomSet(kpis);
+        paretoFront = pareto.nonDominated(tradeSpace);
+        break;
+      case 'o': // load objectives from file
+        selectInput("Select an objectives file:", "objectivesFileSelected");
+        break;
+      case 'l': // load solutions file
+        selectInput("Select a solution set file:", "solutionsFileSelected");
         break;
   }
 
@@ -96,13 +122,13 @@ public void keyPressed() {
       if(canvas.y_index > 0) {
         canvas.y_index--;
       } else {
-        canvas.y_index = numObjectives - 1;
+        if (numObjectives > 0) canvas.y_index = numObjectives - 1;
       }
     } else if (keyCode == LEFT) {
       if(canvas.x_index > 0) {
         canvas.x_index--;
       } else {
-        canvas.x_index = numObjectives - 1;
+        if (numObjectives > 0) canvas.x_index = numObjectives - 1;
       }
     } else if (keyCode == RIGHT) {
       if(canvas.x_index + 1 < numObjectives) {
@@ -111,6 +137,29 @@ public void keyPressed() {
         canvas.x_index = 0;
       }
     } 
+  }
+  loop();
+}
+
+void objectivesFileSelected(File selection) {
+  if (selection == null) {
+    println("Window was closed or the user hit cancel.");
+  } else {
+    println("User selected " + selection.getAbsolutePath());
+    objectivesFile = selection;
+    kpis = loadObjectives(objectivesFile);
+  }
+  loop();
+}
+
+void solutionsFileSelected(File selection) {
+  if (selection == null) {
+    println("Window was closed or the user hit cancel.");
+  } else {
+    println("User selected " + selection.getAbsolutePath());
+    solutionsFile = selection;
+    tradeSpace = loadSet(solutionsFile, kpis);
+    paretoFront = pareto.nonDominated(tradeSpace);
   }
   loop();
 }

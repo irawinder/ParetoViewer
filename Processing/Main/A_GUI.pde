@@ -43,17 +43,34 @@ private class Renderer {
   private void render(SolutionSet set1, SolutionSet set2, int x, int y, int w, int h) {
     background(WHITE);
        
-    renderSolutionSet("", set1, x, y, w, h, BLACK, 3, true);
-    renderSolutionSet("Non-Dominated Solutions", set2, x, y, w, h, PURPLE, 4, false);
+    renderSolutionSet("", set1, x, y, w, h, BLACK, 3, true, false);
+    renderSolutionSet("Non-Dominated Solutions", set2, x, y, w, h, PURPLE, 4, false, false);
     
-    // Key Legend
+    String data = "Data: ";
+    if (tradeSpace.getSetList().size() == 0) {
+      data += "\n" + "[no data]";
+    } else if (solutionsFile == null) {
+      data += "\n" + "[random data with random objectives]";
+    } else {
+      data += "\n" + "[" + solutionsFile.toString() + "]";
+    }
+    
+    String objectives = "Objectives: ";
+    for (int i=0; i<kpis.length; i++) {
+      objectives += "\n" + kpis[i];
+    }
+    
+    String keyLegend = "Controls:" +
+       "\n" + "Use arrow keys to change axes objectives" + 
+       "\n" + "Press 'r' to generate random data" +
+       "\n" + "Press 'o' to load objectives from file" +
+       "\n" + "Press 'l' to load solution set from file";
+    
     textAlign(LEFT); fill(BLACK);
-    text("Use arrow keys to change axes objectives" + 
-       "\n" + "Press 'r' to regenerate data"
-       , 50, 20);
+    text(data + "\n\n" + keyLegend + "\n\n" + objectives, 50, 20);
   }
   
-  private void renderSolutionSet(String label, SolutionSet set, int x, int y, int w, int h, color fill, int diameter, boolean showAxes) {
+  private void renderSolutionSet(String label, SolutionSet set, int x, int y, int w, int h, color fill, int diameter, boolean showAxes, boolean showPointLabel) {
     
     pushMatrix(); translate(x, y);
     
@@ -134,8 +151,12 @@ private class Renderer {
       float x_pos = map( (float)xP.getValue(), (float)x_axis.getMin(), (float)x_axis.getMax(), 0, w);
       float y_pos = map( (float)yP.getValue(), (float)y_axis.getMin(), (float)y_axis.getMax(), h, 0);
       
+      pushMatrix(); translate(x_pos, y_pos);
       fill(fill); noStroke();
-      circle(x_pos, y_pos, diameter);
+      circle(0, 0, diameter);
+      textAlign(LEFT);
+      if (showPointLabel) text(design.getName(), 20, random(-20, 20));
+      popMatrix();
     }
     
     // Draw Label

@@ -80,7 +80,7 @@
   @Override
   public String toString() {
     String tS = "Solution: " + this.name;
-    for (Performance p : this.indicatorList) tS += "\n" + p;
+    //for (Performance p : this.indicatorList) tS += "\n" + p;
     return tS;
   }
 }
