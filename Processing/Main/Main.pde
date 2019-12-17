@@ -51,11 +51,11 @@
  *    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-String VERSION = "v1.0-alpha.4";
+String VERSION = "v1.0-alpha.5";
  
 // Width of Processing canvas, in pixels
-int DEFAULT_CANVAS_WIDTH  = 500;
-int DEFAULT_CANVAS_HEIGHT = 900;
+int DEFAULT_CANVAS_WIDTH  = 1000;
+int DEFAULT_CANVAS_HEIGHT = 500;
 int MARGIN = 50;
 
 File objectivesFile;
@@ -72,7 +72,9 @@ public void settings() {
 }
 
 public void setup() {
-
+  
+  surface.setTitle("Pareto Viewer [" + VERSION + "]");
+  
   // Initialize the Pareto Analyzer Class
   pareto = new Pareto();
   
@@ -88,7 +90,7 @@ public void setup() {
 public void draw() {
   
   // render items to screen;
-  canvas.render(kpis, tradeSpace, paretoFront, MARGIN, height - width + MARGIN, width - 2*MARGIN, width - 2*MARGIN);
+  canvas.render(kpis, tradeSpace, paretoFront, MARGIN);
   
   // Run and Print Tests to console
   runTests();

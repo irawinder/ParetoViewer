@@ -70,9 +70,13 @@ private class Renderer {
     y_index = DEFAULT_Y_INDEX;
   }
   
-  private void render(Objective[] obj, SolutionSet set1, SolutionSet set2, int x, int y, int w, int h) {
+  private void render(Objective[] obj, SolutionSet set1, SolutionSet set2, int MARGIN) {
     background(WHITE);
     
+    int x = width/2 + MARGIN;
+    int y = MARGIN;
+    int w = height - 2*MARGIN;
+    int h = height - 2*MARGIN;
     if (set1.getSetList().size() > 0) renderSolutionSet("", set1, x, y, w, h, BLACK, 5, true, false, true);
     if (set2.getSetList().size() > 0) renderSolutionSet("Pareto Frontier Solutions", set2, x, y, w, h, PURPLE, 8, false, false, false);
     
@@ -239,7 +243,7 @@ private class Renderer {
     fill(fill, 175); 
     text(label, 2*diameter, -12);
     noStroke();
-    circle(diameter/2, -15, diameter);
+    circle(8, -15, diameter);
       
     popMatrix();
   }
