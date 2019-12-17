@@ -3,28 +3,22 @@
  */
 private void runTests() {
   
-  //// Print all Solutions
-  //println("---------------Begin Trade Space-----------------");
-  //println(tradeSpace);
-  
-  // Print Summary of Pareto Dominant Solutions
-  println("---------------Begin Pareto Front-----------------");
-  println(paretoFront);
+  println("<---Begin Analysis: " + tradeSpace.getName() + "--->" + "\n");
   
   // Print Objectives
-  println("---------------Begin Objectives-----------------");
+  println("   ---Objectives---");
   for(int i=0; i<kpis.length; i++) {
-    println(kpis[i]);
+    println("   " + kpis[i]);
   }
+  println("");
   
-  //// Test Performance Contests
-  //Objective obj = new Objective();
-  //Performance test = new Performance();
-  //test.setObjective(obj);
-  //Performance contestant = new Performance();
-  //contestant.setObjective(obj);
-  //obj.setUtopia(1);
-  //test.setValue(0.5);
-  //contestant.setValue(0.5);
-  //println(test.contest(contestant));
+  // Print all Solutions
+  println("   ---All Solutions---");
+  println(tradeSpace);
+  
+  // Print Summary of Pareto Dominant Solutions
+  println("   ---Pareto Frontier Solutions---");
+  println(paretoFront);
+  
+  println("\n");
 }

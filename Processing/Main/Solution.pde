@@ -79,7 +79,7 @@
   
   @Override
   public String toString() {
-    String tS = "Solution: " + this.name;
+    String tS = this.name;
     //for (Performance p : this.indicatorList) tS += "\n" + p;
     return tS;
   }

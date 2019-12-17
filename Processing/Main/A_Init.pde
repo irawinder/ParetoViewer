@@ -33,6 +33,7 @@ private SolutionSet loadSet(File data, Objective[] objectives) {
     
     // Populate solution set w/ solutions
     SolutionSet solutions = new SolutionSet();
+    solutions.setName(data.toString());
     for (int i=0; i<solutionsTable.getRowCount(); i++) {
       Solution design = new Solution();
       
@@ -98,6 +99,7 @@ private SolutionSet randomSet(Objective[] objectives) {
   
   // Initialize Test Solution Set
   SolutionSet testSet = new SolutionSet();
+  testSet.setName("Random Set");
   
   // Populate solution set w/ solutions containing random values for KPIs
   int numDesigns = 100;

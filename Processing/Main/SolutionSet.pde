@@ -118,8 +118,8 @@ public class SolutionSet {
   
   @Override
   public String toString() {
-    String tS = "Solution Set: " + this.name;
-    for (Solution design : this.setList) tS += "\n" + design;
+    String tS = "";
+    for (Solution design : this.setList) tS += "   " + design + "\n";
     return tS;
   }
 }
