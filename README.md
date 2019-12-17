@@ -37,4 +37,4 @@
 2. Download Processing 3:  
  https://processing.org/download/
 
-3. Open and run "/ParetoOptimizer/Processing/Main/Main.pde" with Processing 3
+3. Open and run "/ParetoViewer/Processing/Main/Main.pde" with Processing 3
