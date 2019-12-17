@@ -1,21 +1,37 @@
-/*  PARETO OPTIMIZER
+/*  PARETO VIEWER
  *  Ira Winder, jiw@mit.edu, 2019
  *  MIT Strategic Engineering Research Group
  *
- *  Pareto Optimizer facilitates the analysis and visualization of scenarios in a multi-objective 
+ *  Pareto Viewer facilitates the analysis and visualization of scenarios in a multi-objective 
  *  optimization problem. 
  *
- *  For a primer on multi-objective optimization (i.e. "Pareto Optimization), go here:
+ *  For a primer on multi-objective optimization (i.e. "Pareto optimal" or "non-dominated" solutions), go here:
  *  https://en.wikipedia.org/wiki/Multi-objective_optimization
  *
- *  To use this software, you must already have a data-set of design scenarios and their multi-
- *  objective performance to load into "solutionFile". For instance:
+ *  To use this software, you must already have a CSV data-set of: 
  *
- *  Solution Name  |  Objective #1        |  Objective #1        |  Objective #3        | ...
- *  -----------------------------------------------------------------------------------------
- *  Solution A     |  Performance #1 (A)  |  Performance #2 (A)  |  Performance #3 (A)  | ...
- *  Solution B     |  Performance #1 (B)  |  Performance #2 (B)  |  Performance #3 (B)  | ...
- *  ...            |  ...                 |  ...                 |  ...                 | ...
+ *  (1) Multiple Design Objectives
+ *
+ *  Objective Name  |  Unit Label          |  Utopia (+1 or -1)  |
+ *  ----------------|----------------------|---------------------|
+ *  Objective #1    |  Units 1 (e.g. kg)   |  +/- 1              |
+ *  Objective #2    |  Units 2 (e.g. kg)   |  +/- 1              |
+ *  ...             |  ...                 |  ...                |
+ *
+ *  Utopia defines the directionality of a an objective's numerical benefit. 
+ *  [e.g. for the objective "cost" where minimizing is best, use "-1"]
+ *  [e.g. for the objective "profit" where maximizing is best, use "+1"]
+ *
+ *  (2) Solution Scenarios with Multi-objective Performance
+ *
+ *  Solution Name  |  Objective #1           |  Objective #1           |  ...
+ *  ---------------|-------------------------|-------------------------|-----
+ *  Solution A     |  Performance #1 (A)     |  Performance #2 (A)     |  ...
+ *  Solution B     |  Performance #1 (B)     |  Performance #2 (B)     |  ...
+ *  ...            |  ...                    |  ...                    |  ...
+ *  Solution FINAL |  Performance #1 (FINAL) |  Performance #2 (FINAL) |  ...
+ *
+ *  Note: Performance values must be passed as numerical quantities
  *
  *  MIT LICENSE: Copyright 2019 Ira Winder
  *
@@ -34,12 +50,13 @@
  *    DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
  *    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
- 
-String VERSION = "v1.0-alpha.3";
 
+String VERSION = "v1.0-alpha.4";
+ 
 // Width of Processing canvas, in pixels
-int CANVAS_WIDTH  = 500;
-int CANVAS_HEIGHT = 750;
+int DEFAULT_CANVAS_WIDTH  = 500;
+int DEFAULT_CANVAS_HEIGHT = 900;
+int MARGIN = 50;
 
 File objectivesFile;
 File solutionsFile;
@@ -51,11 +68,11 @@ Pareto pareto;
 Renderer canvas;
 
 public void settings() {
-  size(CANVAS_WIDTH, CANVAS_HEIGHT);
+  size(DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT);
 }
 
 public void setup() {
-  
+
   // Initialize the Pareto Analyzer Class
   pareto = new Pareto();
   
@@ -71,7 +88,7 @@ public void setup() {
 public void draw() {
   
   // render items to screen;
-  canvas.render(tradeSpace, paretoFront, 50, 300, 400, 400);
+  canvas.render(kpis, tradeSpace, paretoFront, MARGIN, height - width + MARGIN, width - 2*MARGIN, width - 2*MARGIN);
   
   // Run and Print Tests to console
   runTests();
@@ -94,23 +111,30 @@ public void keyPressed() {
         paretoFront = pareto.nonDominated(tradeSpace);
         break;
       case 'r': // random solution set
+        objectivesFile = null;
         solutionsFile = null;
         kpis = testObjectives();
         tradeSpace = randomSet(kpis);
         paretoFront = pareto.nonDominated(tradeSpace);
         break;
       case 'o': // load objectives from file
-        selectInput("Select an objectives file:", "objectivesFileSelected");
+        if (objectivesFile == null && tradeSpace.getSetList().size() == 0) {
+          selectInput("Select an objectives file:", "objectivesFileSelected");
+        }
         break;
       case 'l': // load solutions file
-        selectInput("Select a solution set file:", "solutionsFileSelected");
+        if (objectivesFile != null) {
+          selectInput("Select a solution set file:", "solutionsFileSelected");
+        } else {
+          println("You must select an objectives file first");
+        }
         break;
   }
 
   // Listener for arrow-based key commands to change which objective is plotted on the graph
   if (key == CODED) {
     
-    int numObjectives = tradeSpace.getObjectiveList().size();
+    int numObjectives = kpis.length;
     
     if (keyCode == UP) {
       if(canvas.y_index + 1 < numObjectives) {

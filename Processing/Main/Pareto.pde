@@ -51,7 +51,6 @@ private class Pareto {
        Solution contestant = dominant.get(contestant_index);
        if (dominates(design, contestant)) {
          dominant.remove(contestant_index);
-         println("removed " + contestant.getName() + ":\n" + design + "\n" + contestant);
        } 
      }
    }

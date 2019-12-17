@@ -32,6 +32,35 @@ private class Renderer {
   private color GREY    = color(150);
   private color PURPLE  = color(255, 0, 255);
   
+  String APP_INFO = 
+   "PARETO VIEWER [" + VERSION + "]" + "\n" +
+   "Ira Winder, jiw@mit.edu, 2019";
+  
+  String DESCRIPTION =
+   "Pareto Viewer facilitates the analysis and visualization of scenarios in a multi-objective optimization problem." + "\n" +
+   "\n" + 
+   "For a primer on multi-objective optimization (i.e. 'Pareto optimal' or 'non-dominated' solutions), go here:" + "\n" +
+   "https://en.wikipedia.org/wiki/Multi-objective_optimization";
+   
+  String OBJECTIVES_DATA_FORMAT = 
+   "  Objective Name, Unit Label, Utopia (+1 or -1)" + "\n" +
+   "  Objective #1, Units 1 (e.g. kg), +/- 1" + "\n" +
+   "  Objective #2, Units 2 (e.g. kg), +/- 1" + "\n" +
+   "  ..., ..., ..." + "\n" +
+   "  \n" +
+   "  Utopia defines the directionality of objective's numerical benefit." + "\n" +
+   "  [e.g. for the objective 'cost' where minimizing is best, use '-1']" + "\n" +
+   "  [e.g. for the objective 'profit' where maximizing is best, use '+1']";
+   
+  String SOLUTIONS_DATA_FORMAT = 
+   "  Solution Name, Objective #1, Objective #1, ..." + "\n" +
+   "  Solution A, Performance #1 (A), Performance #2 (A), ..." + "\n" +
+   "  Solution B, Performance #1 (B), Performance #2 (B), ..." + "\n" +
+   "  ..., ..., ..., ..." + "\n" +
+   "  Solution FINAL, Performance #1 (FINAL), Performance #2 (FINAL), ..." + "\n" +
+   "  \n" +
+   "  Note: Performance values must be passed as numerical quantities.";
+   
   // Index value of objectives to show on axes
   public int x_index, y_index;
 
@@ -40,34 +69,54 @@ private class Renderer {
     y_index = DEFAULT_Y_INDEX;
   }
   
-  private void render(SolutionSet set1, SolutionSet set2, int x, int y, int w, int h) {
+  private void render(Objective[] obj, SolutionSet set1, SolutionSet set2, int x, int y, int w, int h) {
     background(WHITE);
        
-    renderSolutionSet("", set1, x, y, w, h, BLACK, 3, true, false);
-    renderSolutionSet("Non-Dominated Solutions", set2, x, y, w, h, PURPLE, 4, false, false);
+    if (set1.getSetList().size() > 0) renderSolutionSet("", set1, x, y, w, h, BLACK, 3, true, false);
+    if (set2.getSetList().size() > 0) renderSolutionSet("Non-Dominated Solutions", set2, x, y, w, h, PURPLE, 4, false, false);
     
-    String data = "Data: ";
-    if (tradeSpace.getSetList().size() == 0) {
-      data += "\n" + "[no data]";
-    } else if (solutionsFile == null) {
-      data += "\n" + "[random data with random objectives]";
+    String objectives = "";
+    String solutions = "";
+    String header = APP_INFO;
+    
+    objectives = "Step 1: Populate Objectives";
+    if (objectivesFile == null && set1.getSetList().size() == 0) {
+      header += "\n\n" + DESCRIPTION;
+      objectives += "\n" + "Press 'o' to load objectives from file (e.g. 'objectives.csv')" + "\n";
+      objectives += "\n" + "  Example CSV Format:" + "\n" + OBJECTIVES_DATA_FORMAT;
     } else {
-      data += "\n" + "[" + solutionsFile.toString() + "]";
+      objectives += " [complete]" + "\n";
+      if (objectivesFile == null) {
+        objectives += "Data: [hard-coded sample]" + "\n";
+      } else {
+        objectives += "Data: [" + objectivesFile.toString() + "]" + "\n";
+      }
+      for (int i=0; i<obj.length; i++) {
+        objectives += "\n" + obj[i];
+      }
     }
     
-    String objectives = "Objectives: ";
-    for (int i=0; i<kpis.length; i++) {
-      objectives += "\n" + kpis[i];
+    if (objectivesFile != null || set1.getSetList().size() > 0 ) {
+      solutions = "Step 2: Populate Solutions";
+      if (solutionsFile == null && set1.getSetList().size() == 0) {
+        solutions += "\n" + "Press 'l' to load solution set from file (e.g. 'designs.csv')" + "\n";
+        solutions += "\n" + "  Example CSV Format:" + "\n" + SOLUTIONS_DATA_FORMAT;
+      } else {
+        solutions += " [complete]" + "\n";
+        if (solutionsFile == null) {
+          solutions += "Data: [" + tradeSpace.getSetList().size() + " random solutions]";
+        } else {
+          solutions += "Data: [" + solutionsFile.toString() + "]";
+        }
+      }
     }
     
-    String keyLegend = "Controls:" +
-       "\n" + "Use arrow keys to change axes objectives" + 
-       "\n" + "Press 'r' to generate random data" +
-       "\n" + "Press 'o' to load objectives from file" +
-       "\n" + "Press 'l' to load solution set from file";
+    header += "\n\n" + "---------------------" +
+      "\n" + "Press 'c' to start over and/or load data" +
+      "\n" + "Press 'r' to generate random data";
     
     textAlign(LEFT); fill(BLACK);
-    text(data + "\n\n" + keyLegend + "\n\n" + objectives, 50, 20);
+    text(header + "\n\n" + objectives + "\n\n" + solutions + "\n\n", MARGIN, MARGIN, w, h);
   }
   
   private void renderSolutionSet(String label, SolutionSet set, int x, int y, int w, int h, color fill, int diameter, boolean showAxes, boolean showPointLabel) {
@@ -92,6 +141,7 @@ private class Renderer {
       rect(0, 0, w, h);
       
       fill(BLACK);
+      text("Use arrow keys to change axes objectives", 0, -10);
       
       // Draw x_axis label
       pushMatrix(); translate(0, 20);
