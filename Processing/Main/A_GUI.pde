@@ -31,6 +31,7 @@ private class Renderer {
   private color BLACK   = color(0);
   private color GREY    = color(150);
   private color PURPLE  = color(255, 0, 255);
+  private color GREEN   = color(0, 50, 0);
   
   String APP_INFO = 
    "PARETO VIEWER [" + VERSION + "]" + "\n" +
@@ -71,13 +72,17 @@ private class Renderer {
   
   private void render(Objective[] obj, SolutionSet set1, SolutionSet set2, int x, int y, int w, int h) {
     background(WHITE);
-       
-    if (set1.getSetList().size() > 0) renderSolutionSet("", set1, x, y, w, h, BLACK, 3, true, false);
-    if (set2.getSetList().size() > 0) renderSolutionSet("Non-Dominated Solutions", set2, x, y, w, h, PURPLE, 4, false, false);
+    
+    if (set1.getSetList().size() > 0) renderSolutionSet("", set1, x, y, w, h, BLACK, 5, true, false, true);
+    if (set2.getSetList().size() > 0) renderSolutionSet("Non-Dominated Solutions", set2, x, y, w, h, PURPLE, 8, false, false, false);
     
     String objectives = "";
     String solutions = "";
-    String header = APP_INFO;
+    String header = APP_INFO + "\n" +
+      "\n" + "---------------------" +
+      "\n" + "Press 'c' to start over and/or load data" +
+      "\n" + "Press 'r' to generate random data";
+    String arrows = "";
     
     objectives = "Step 1: Populate Objectives";
     if (objectivesFile == null && set1.getSetList().size() == 0) {
@@ -111,15 +116,20 @@ private class Renderer {
       }
     }
     
-    header += "\n\n" + "---------------------" +
-      "\n" + "Press 'c' to start over and/or load data" +
-      "\n" + "Press 'r' to generate random data";
+    if(tradeSpace.getSetList().size() > 0) {
+      arrows += "Step 3: Use arrow keys to change axes objectives" + "\n";
+      arrows += "X-AXIS -> LEFT or RIGHT; Y-AXIS -> UP or DOWN"; 
+    }
     
     textAlign(LEFT); fill(BLACK);
-    text(header + "\n\n" + objectives + "\n\n" + solutions + "\n\n", MARGIN, MARGIN, w, h);
+    text(header + "\n\n" + objectives + "\n\n" + solutions + "\n\n" + arrows, MARGIN, MARGIN, w, h);
   }
   
-  private void renderSolutionSet(String label, SolutionSet set, int x, int y, int w, int h, color fill, int diameter, boolean showAxes, boolean showPointLabel) {
+  private void renderSolutionSet(
+    String label, SolutionSet set, 
+    int x, int y, int w, int h, 
+    color fill, int diameter, 
+    boolean showAxes, boolean showPointLabel, boolean highlightLast) {
     
     pushMatrix(); translate(x, y);
     
@@ -141,7 +151,6 @@ private class Renderer {
       rect(0, 0, w, h);
       
       fill(BLACK);
-      text("Use arrow keys to change axes objectives", 0, -10);
       
       // Draw x_axis label
       pushMatrix(); translate(0, 20);
@@ -195,17 +204,33 @@ private class Renderer {
       
     // Draw Solutions
     for(Solution design : set.getSetList()) {
-      Performance xP = design.getIndicatorMap().get(x_axis);
-      Performance yP = design.getIndicatorMap().get(y_axis);
       
-      float x_pos = map( (float)xP.getValue(), (float)x_axis.getMin(), (float)x_axis.getMax(), 0, w);
-      float y_pos = map( (float)yP.getValue(), (float)y_axis.getMin(), (float)y_axis.getMax(), h, 0);
+      // Add some visual jitter to help see overlapping points
+      float jit = 0.5; // pixels
+      float x_pos = getX(design, x_axis, w) + random(-jit, jit);
+      float y_pos = getY(design, y_axis, h) + random(-jit, jit);
       
       pushMatrix(); translate(x_pos, y_pos);
-      fill(fill); noStroke();
+      fill(fill, 75); noStroke();
       circle(0, 0, diameter);
       textAlign(LEFT);
       if (showPointLabel) text(design.getName(), 20, random(-20, 20));
+      popMatrix();
+    }
+    
+    if(highlightLast) {
+      ArrayList<Solution> all = set.getSetList();
+      int final_index = all.size() - 1;
+      Solution last = all.get(final_index);
+      
+      float x_pos = getX(last, x_axis, w);
+      float y_pos = getY(last, y_axis, h);
+      
+      pushMatrix(); translate(x_pos , y_pos);
+      noFill(); stroke(GREEN);
+      rect(- diameter, - diameter, 2*diameter, 2*diameter);
+      textAlign(CENTER); fill(GREEN);
+      text("FINAL", 0, -10);
       popMatrix();
     }
     
@@ -217,6 +242,16 @@ private class Renderer {
     popMatrix();
   }
   
+  public float getX(Solution design, Objective x_axis, int w) {
+    Performance xP = design.getIndicatorMap().get(x_axis);
+    return map( (float)xP.getValue(), (float)x_axis.getMin(), (float)x_axis.getMax(), 0, w);
+  }
+  
+  public float getY(Solution design, Objective y_axis, int h) {
+    Performance yP = design.getIndicatorMap().get(y_axis);
+    return map( (float)yP.getValue(), (float)y_axis.getMin(), (float)y_axis.getMax(), 0, h);
+  }
+    
   private float chop(double value, int digits) {
     return (float) Math.pow(0.1, digits) * (int)((Math.pow(10, digits) * value));
   }
