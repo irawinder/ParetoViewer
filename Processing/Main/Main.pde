@@ -51,7 +51,7 @@
  *    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-String VERSION = "v1.0-alpha.5";
+String VERSION = "v1.0-alpha.6";
  
 // Width of Processing canvas, in pixels
 int DEFAULT_CANVAS_WIDTH  = 1000;

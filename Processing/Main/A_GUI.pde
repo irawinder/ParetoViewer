@@ -31,7 +31,7 @@ private class Renderer {
   private color BLACK   = color(0);
   private color GREY    = color(150);
   private color PURPLE  = color(255, 0, 255);
-  private color GREEN   = color(0, 50, 0);
+  private color GREEN   = color(0, 100, 0);
   
   String APP_INFO = 
    "PARETO VIEWER [" + VERSION + "]" + "\n" +
@@ -78,7 +78,7 @@ private class Renderer {
     int w = height - 2*MARGIN;
     int h = height - 2*MARGIN;
     if (set1.getSetList().size() > 0) renderSolutionSet("", set1, x, y, w, h, BLACK, 5, true, false, true);
-    if (set2.getSetList().size() > 0) renderSolutionSet("Pareto Frontier Solutions", set2, x, y, w, h, PURPLE, 8, false, false, false);
+    if (set2.getSetList().size() > 0) renderSolutionSet("Pareto Frontier Solution", set2, x, y, w, h, PURPLE, 8, false, false, false);
     
     String objectives = "";
     String solutions = "";
@@ -210,13 +210,18 @@ private class Renderer {
     for(Solution design : set.getSetList()) {
       
       // Add some visual jitter to help see overlapping points
-      float jit = 0.5; // pixels
+      float jit = 0.0; // pixels
       float x_pos = getX(design, x_axis, w) + random(-jit, jit);
       float y_pos = getY(design, y_axis, h) + random(-jit, jit);
       
       pushMatrix(); translate(x_pos, y_pos);
-      fill(fill, 100); noStroke();
+      fill(fill, 100); stroke(fill, 125);
+      if (diameter > 5) {
+        strokeWeight(4);
+        noFill();
+      }
       circle(0, 0, diameter);
+      strokeWeight(1);
       textAlign(LEFT);
       if (showPointLabel) text(design.getName(), 20, random(-20, 20));
       popMatrix();
@@ -240,11 +245,16 @@ private class Renderer {
     
     // Draw Label
     textAlign(LEFT);
-    fill(fill, 175); 
+    fill(fill, 100); 
     text(label, 2*diameter, -12);
-    noStroke();
+    stroke(fill, 125);
+    if (diameter > 5) {
+      noFill();
+      strokeWeight(3);
+    }
     circle(8, -15, diameter);
-      
+    strokeWeight(1);
+    
     popMatrix();
   }
   
