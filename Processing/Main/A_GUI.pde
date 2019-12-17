@@ -57,6 +57,7 @@ private class Renderer {
    "  Solution A, Performance #1 (A), Performance #2 (A), ..." + "\n" +
    "  Solution B, Performance #1 (B), Performance #2 (B), ..." + "\n" +
    "  ..., ..., ..., ..." + "\n" +
+   "  Solution FINAL, Performance #1 (FINAL), Performance #2 (FINAL), ..." + "\n" +
    "  \n" +
    "  Note: Performance values must be passed as numerical quantities.";
    
@@ -113,9 +114,6 @@ private class Renderer {
     header += "\n\n" + "---------------------" +
       "\n" + "Press 'c' to start over and/or load data" +
       "\n" + "Press 'r' to generate random data";
-    if (tradeSpace.getSetList().size() > 0) {
-      header += "\n" + "Use arrow keys to change axes objectives";
-    }
     
     textAlign(LEFT); fill(BLACK);
     text(header + "\n\n" + objectives + "\n\n" + solutions + "\n\n", MARGIN, MARGIN, w, h);
@@ -143,6 +141,7 @@ private class Renderer {
       rect(0, 0, w, h);
       
       fill(BLACK);
+      text("Use arrow keys to change axes objectives", 0, -10);
       
       // Draw x_axis label
       pushMatrix(); translate(0, 20);

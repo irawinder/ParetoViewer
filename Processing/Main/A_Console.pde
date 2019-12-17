@@ -1,5 +1,5 @@
 /**
- * Test application
+ * Print Important Summaries and Analysis to Console
  */
 private void runTests() {
   
@@ -27,5 +27,4 @@ private void runTests() {
   //test.setValue(0.5);
   //contestant.setValue(0.5);
   //println(test.contest(contestant));
-  
 }
