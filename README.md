@@ -1,13 +1,13 @@
 # ParetoViewer
  ParetoViewer facilitates the analysis and visualization of scenario performance in a multi-objective optimization problem.
  
-## What is Pareto Optimization?
- Glad you asked. Read about it [here](https://en.wikipedia.org/wiki/Multi-objective_optimization).
+## What are "Pareto optimal" or "non-dominated" solutions?
+ Glad you asked! Read about it [here](https://en.wikipedia.org/wiki/Multi-objective_optimization).
  
 ## Data Preparation
  To use this software, you must already have a structured data-set of: 
  
-(1) Multiple Design Objectives (e.g. 'objectives.csv')
+### (1) Multiple Design Objectives (e.g. 'objectives.csv')
 
  Objective Name  |  Unit Label          |  Utopia (+1 or -1) |
  ----------------|----------------------|--------------------|
@@ -19,7 +19,7 @@
  [e.g. for the objective "cost" where minimizing is best, use "-1"]
  [e.g. for the objective "profit" where maximizing is best, use "+1"]
 
-(2) Solution Scenarios with Multi-objective Performance (e.g. 'solutions.csv')
+### (2) Solution Scenarios with Multi-objective Performance (e.g. 'solutions.csv')
 
  Solution Name  |  Objective #1        |  Objective #2        |  ...
  ---------------|----------------------|----------------------|-----
