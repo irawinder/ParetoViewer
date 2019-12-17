@@ -74,7 +74,7 @@ private class Renderer {
     background(WHITE);
     
     if (set1.getSetList().size() > 0) renderSolutionSet("", set1, x, y, w, h, BLACK, 5, true, false, true);
-    if (set2.getSetList().size() > 0) renderSolutionSet("Non-Dominated Solutions", set2, x, y, w, h, PURPLE, 8, false, false, false);
+    if (set2.getSetList().size() > 0) renderSolutionSet("Pareto Frontier Solutions", set2, x, y, w, h, PURPLE, 8, false, false, false);
     
     String objectives = "";
     String solutions = "";
@@ -122,7 +122,7 @@ private class Renderer {
     }
     
     textAlign(LEFT); fill(BLACK);
-    text(header + "\n\n" + objectives + "\n\n" + solutions + "\n\n" + arrows, MARGIN, MARGIN, w, h);
+    text(header + "\n\n" + objectives + "\n\n" + solutions + "\n\n" + arrows, MARGIN, MARGIN/2, w, h);
   }
   
   private void renderSolutionSet(
@@ -211,7 +211,7 @@ private class Renderer {
       float y_pos = getY(design, y_axis, h) + random(-jit, jit);
       
       pushMatrix(); translate(x_pos, y_pos);
-      fill(fill, 75); noStroke();
+      fill(fill, 100); noStroke();
       circle(0, 0, diameter);
       textAlign(LEFT);
       if (showPointLabel) text(design.getName(), 20, random(-20, 20));
@@ -236,8 +236,10 @@ private class Renderer {
     
     // Draw Label
     textAlign(LEFT);
-    fill(fill, 100);
-    text(label, 5, 15);  
+    fill(fill, 175); 
+    text(label, 2*diameter, -12);
+    noStroke();
+    circle(diameter/2, -15, diameter);
       
     popMatrix();
   }
