@@ -1,6 +1,9 @@
 # ParetoViewer
  ParetoViewer facilitates the analysis and visualization of scenario performance in a multi-objective optimization problem.
- 
+
+## Screenshot
+![screenshot](/screenshots/latest_release.png "Pareto Viewer")
+
 ## What are "Pareto optimal" or "non-dominated" solutions?
  Glad you asked! Read about it [here](https://en.wikipedia.org/wiki/Multi-objective_optimization).
  
