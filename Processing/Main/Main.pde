@@ -1,6 +1,6 @@
 /*  PARETO VIEWER
  *  Ira Winder, jiw@mit.edu, 2019
- *  MIT Strategic Engineering Research Group
+ *  MIT Engineering Systems Laboratory
  *
  *  Pareto Viewer facilitates the analysis and visualization of scenarios in a multi-objective 
  *  optimization problem. 
@@ -51,7 +51,7 @@
  *    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-String VERSION = "v1.0-alpha.6";
+String VERSION = "v1.0-alpha.6.1";
  
 // Width of Processing canvas, in pixels
 int DEFAULT_CANVAS_WIDTH  = 1000;
