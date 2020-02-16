@@ -265,7 +265,7 @@ private class Renderer {
   
   public float getY(Solution design, Objective y_axis, int h) {
     Performance yP = design.getIndicatorMap().get(y_axis);
-    return map( (float)yP.getValue(), (float)y_axis.getMin(), (float)y_axis.getMax(), 0, h);
+    return map( (float)yP.getValue(), (float)y_axis.getMin(), (float)y_axis.getMax(), h, 0);
   }
     
   private float chop(double value, int digits) {
