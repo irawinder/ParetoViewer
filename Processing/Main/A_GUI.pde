@@ -168,13 +168,13 @@ private class Renderer {
         // Min Value
         pushMatrix(); translate(0, h);
         textAlign(LEFT);
-        text("" + chop(x_axis.getMin(), 3), 0, 0);
+        text("" + chop(x_axis.getMin(), 4), 0, 0);
         popMatrix();
         
         // Max Value
         pushMatrix(); translate(w, h);
         textAlign(RIGHT);
-        text("" + chop(x_axis.getMax(), 3), 0, 0);
+        text("" + chop(x_axis.getMax(), 4), 0, 0);
         popMatrix();
       
       popMatrix();
@@ -193,14 +193,14 @@ private class Renderer {
         pushMatrix(); translate(0, h);
         textAlign(LEFT);
         rotate(-0.5*PI);
-        text("" + chop(y_axis.getMin(), 3), 0, 0);
+        text("" + chop(y_axis.getMin(), 4), 0, 0);
         popMatrix();
         
         // Max Value
         pushMatrix(); translate(0, 0);
         textAlign(RIGHT);
         rotate(-0.5*PI);
-        text("" + chop(y_axis.getMax(), 3), 0, 0);
+        text("" + chop(y_axis.getMax(), 4), 0, 0);
         popMatrix();
       
       popMatrix();
@@ -236,10 +236,10 @@ private class Renderer {
       float y_pos = getY(last, y_axis, h);
       
       pushMatrix(); translate(x_pos , y_pos);
-      noFill(); stroke(GREEN);
+      noFill(); stroke(GREEN); strokeWeight(2);
       rect(- diameter, - diameter, 2*diameter, 2*diameter);
-      textAlign(CENTER); fill(GREEN);
-      text("FINAL", 0, -10);
+      textAlign(CENTER); fill(GREEN); strokeWeight(1);
+      text("FINAL", 30, -10);
       popMatrix();
     }
     
